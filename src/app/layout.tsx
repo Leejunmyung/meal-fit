@@ -1,7 +1,6 @@
-import './globals.css';
+import BottomNav from '@/widgets/bottom-nav/ui/BottomNav';
 import { Header } from '@/widgets/header/ui/Header';
-import { BottomNav } from '@/widgets/bottom-nav/ui/BottomNav';
-
+import './globals.css';
 export const metadata = {
   title: 'AI 식단 추천 앱',
 };
