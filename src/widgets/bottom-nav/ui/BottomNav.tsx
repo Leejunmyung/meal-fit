@@ -1,8 +1,8 @@
 'use client';
 
 import { Calendar, Heart, Home, User } from 'lucide-react';
-import { usePathname, useRouter } from 'next/navigation';
-import { cloneElement, useLayoutEffect, useRef, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { useLayoutEffect, useRef, useState, cloneElement } from 'react';
 import { twMerge } from 'tailwind-merge';
 
 const navItems = [
@@ -13,41 +13,35 @@ const navItems = [
 ];
 
 export default function BottomNav() {
-  const pathname = usePathname();
+  // const pathname = usePathname();
   const router = useRouter();
 
   const [activeIndex, setActiveIndex] = useState(0);
-  const [ready, setReady] = useState(false);
+  const [isReady, setIsReady] = useState(false);
   const limelightRef = useRef<HTMLDivElement | null>(null);
-  const navRef = useRef<HTMLElement | null>(null);
+  const navRef = useRef<(HTMLAnchorElement | null)[]>([]);
 
   // ✅ 경로로 activeIndex 계산
   useLayoutEffect(() => {
-    const index = navItems.findIndex((item) => item.href === pathname);
-    if (index !== -1) setActiveIndex(index);
-  }, [pathname]);
+    if (navItems.length === 0) return;
 
-  // ✅ limelight 위치 정확 계산 (flex 영향 X)
-  useLayoutEffect(() => {
     const limelight = limelightRef.current;
-    const nav = navRef.current;
+    const activeItem = navRef.current[activeIndex];
 
-    if (limelight && nav) {
-      const containerWidth = nav.offsetWidth;
-      const itemWidth = containerWidth / navItems.length;
+    if (limelight && activeItem) {
+      const newLeft =
+        activeItem.offsetLeft + activeItem.offsetWidth / 2 - limelight.offsetWidth / 2;
+      limelight.style.left = `${newLeft}px`;
 
-      const left = itemWidth * activeIndex + itemWidth / 2 - limelight.offsetWidth / 2;
-      console.log(containerWidth, itemWidth, '확인');
-      // if (activeIndex === 3) {
-      //   left += 8;
-      // }
-      limelight.style.left = `${left}px`;
-
-      if (!ready) {
-        setTimeout(() => setReady(true), 50);
+      if (!isReady) {
+        setTimeout(() => setIsReady(true), 50);
       }
     }
-  }, [activeIndex, ready]);
+  }, [activeIndex, isReady, navItems]);
+
+  if (navItems.length === 0) {
+    return null;
+  }
 
   const handleClick = (href: string, index: number) => {
     setActiveIndex(index);
@@ -55,13 +49,13 @@ export default function BottomNav() {
   };
 
   return (
-    <nav
-      ref={navRef}
-      className='fixed bottom-0 inset-x-0 h-16 border flex justify-around items-center z-50 bg-gray-100 dark:bg-card/50 dark:border-accent/50 rounded-xl'
-    >
+    <nav className='fixed bottom-0 inset-x-0 h-16 border flex justify-around items-center z-50 bg-secondary dark:bg-card/50 dark:border-accent/50 rounded-xl'>
       {navItems.map(({ href, icon, id }, index) => (
         <a
           key={id}
+          ref={(el) => {
+            navRef.current[index] = el;
+          }}
           onClick={() => handleClick(href, index)}
           className='relative flex items-center justify-center h-full flex-1 cursor-pointer'
           aria-label={id}
@@ -79,8 +73,8 @@ export default function BottomNav() {
       <div
         ref={limelightRef}
         className={twMerge(
-          'absolute top-0 z-10 w-11 h-[5px] rounded-full bg-black shadow-[0_50px_15px_rgba(59,130,246,0.4)]',
-          ready && 'transition-[left] duration-300 ease-in-out',
+          'absolute top-0 z-10 w-11 h-[5px] rounded-full bg-blue-500 shadow-[0_50px_15px_rgba(59,130,246,0.4)]',
+          isReady && 'transition-[left] duration-300 ease-in-out',
         )}
         style={{ left: '-999px' }}
       >
