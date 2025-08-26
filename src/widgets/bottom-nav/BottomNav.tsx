@@ -2,7 +2,7 @@
 
 import { Calendar, Heart, Home, User } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import { useLayoutEffect, useRef, useState, cloneElement } from 'react';
+import { cloneElement, useLayoutEffect, useRef, useState } from 'react';
 import { twMerge } from 'tailwind-merge';
 
 const navItems = [
@@ -49,7 +49,7 @@ export default function BottomNav() {
   };
 
   return (
-    <nav className='fixed bottom-0 inset-x-0 h-16 border flex justify-around items-center z-50 bg-secondary dark:bg-card/50 dark:border-accent/50 rounded-xl'>
+    <nav className='fixed bottom-0 inset-x-0 h-16 border-t flex justify-around items-center z-50 bg-white dark:bg-card/50'>
       {navItems.map(({ href, icon, id }, index) => (
         <a
           key={id}
@@ -73,7 +73,7 @@ export default function BottomNav() {
       <div
         ref={limelightRef}
         className={twMerge(
-          'absolute top-0 z-10 w-11 h-[5px] rounded-full bg-blue-500 shadow-[0_50px_15px_rgba(59,130,246,0.4)]',
+          'absolute top-0 z-10 w-11 h-[5px] rounded-full bg-black shadow-[0_50px_15px_rgba(59,130,246,0.4)]',
           isReady && 'transition-[left] duration-300 ease-in-out',
         )}
         style={{ left: '-999px' }}
@@ -81,7 +81,7 @@ export default function BottomNav() {
         <div
           className='absolute left-[-30%] top-[5px] w-[160%] h-14 pointer-events-none 
           [clip-path:polygon(5%_100%,25%_0,75%_0,95%_100%)] 
-          bg-gradient-to-b from-black/30 to-transparent'
+          bg-gradient-to-b from-[#4caf50]/40 to-transparent'
         />
       </div>
     </nav>

@@ -1,5 +1,5 @@
-import LoginPage from '@/pages/Login/Login';
+import Login from '@/pages/Login/Login';
 
-export default function Login() {
-  return <LoginPage />;
+export default function LoginPage() {
+  return <Login />;
 }

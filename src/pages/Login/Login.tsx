@@ -1,15 +1,32 @@
 'use client';
 
+import { postLogIn } from '@/shared/api/api';
+import { useMutation } from '@tanstack/react-query';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
-const LoginPage = () => {
+const Login = () => {
+  const router = useRouter()
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+
+  const { mutate } = useMutation({
+    mutationFn: postLogIn,
+    onSuccess: (data) => {
+      console.log("로그인 성공", data)
+      router.push("/");
+
+    },
+    onError: (err) => {
+      console.error("회원가입 실패", err)
+    },
+  })
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
     // TODO: 로그인 처리 로직
     console.log({ email, password });
+    mutate({ username: email, password });
   };
 
   const handleSocialLogin = (provider: 'kakao' | 'naver') => {
@@ -29,12 +46,11 @@ const LoginPage = () => {
           </label>
           <input
             id='email'
-            type='email'
+            type='string'
             className='w-full mt-1 px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500'
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            required
-            placeholder='you@example.com'
+            // required
           />
         </div>
 
@@ -81,4 +97,4 @@ const LoginPage = () => {
   );
 };
 
-export default LoginPage;
+export default Login;
