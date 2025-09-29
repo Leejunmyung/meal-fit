@@ -1,14 +1,14 @@
 'use client';
 
-import { Calendar, Heart, Home, User } from 'lucide-react';
+import { Calendar, Home, User, Camera } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { cloneElement, useLayoutEffect, useRef, useState } from 'react';
 import { twMerge } from 'tailwind-merge';
 
 const navItems = [
   { href: '/', icon: <Home />, id: 'home' },
-  { href: '/planner', icon: <Calendar />, id: 'planner' },
-  { href: '/favorites', icon: <Heart />, id: 'favorites' },
+  { href: '/planner', icon: <Camera />, id: 'planner' },
+  { href: '/favorites', icon: <Calendar />, id: 'favorites' },
   { href: '/profile', icon: <User />, id: 'profile' },
 ];
 
